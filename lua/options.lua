@@ -33,6 +33,11 @@ end)
 -- Enable break indent
 vim.o.breakindent = true
 
+-- Sensible indentation defaults (ftplugins and guess-indent.nvim can override)
+vim.o.tabstop = 4     -- Display width for tabs
+vim.o.shiftwidth = 0  -- Use tabstop value (let ftplugins override)
+vim.o.expandtab = true -- Default to spaces (Go ftplugin sets noexpandtab)
+
 -- Save undo history
 vim.o.undofile = true
 
@@ -79,3 +84,6 @@ vim.o.scrolloff = 10
 vim.o.confirm = true
 
 vim.o.swapfile = false
+
+vim.opt.exrc = true
+vim.opt.secure = true
