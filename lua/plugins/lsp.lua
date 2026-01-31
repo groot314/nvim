@@ -233,30 +233,7 @@ return {
         --
         pyright = {},
         rust_analyzer = {},
-        sqlls = {
-          settings = {
-            sqlLanguageServer = {
-              -- Lint rules (sqlint)
-              lint = {
-                rules = {
-                  ['reserved-word-case'] = { 'error', 'upper' },
-                  ['space-surrounding-operators'] = 'error',
-                },
-              },
-              -- Database connection example (uncomment and configure as needed):
-              -- connections = {
-              --   {
-              --     name = 'dev',
-              --     adapter = 'postgres',
-              --     host = 'localhost',
-              --     port = 5432,
-              --     user = 'postgres',
-              --     database = 'mydb',
-              --   },
-              -- },
-            },
-          },
-        },
+        sqlls = {},
 
         lua_ls = {
           -- cmd = { ... },
