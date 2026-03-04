@@ -219,6 +219,8 @@ return {
           filetypes = { 'html', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
         },
         html = {},
+        terraformls = {},
+        -- nil_ls = {},
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -229,7 +231,9 @@ return {
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-	rust_analyzer = {},
+        pyright = {},
+        rust_analyzer = {},
+        -- sqlls = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -307,7 +311,7 @@ return {
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = { c = true, cpp = true, sql = true }
         if disable_filetypes[vim.bo[bufnr].filetype] then
           return nil
         else
@@ -324,6 +328,7 @@ return {
         typescript = { 'prettier' },
         css = { 'prettier' },
         scss = { 'prettier' },
+        sql = {},
 
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
