@@ -229,6 +229,7 @@ return {
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
+	rust_analyzer = {},
 
         lua_ls = {
           -- cmd = { ... },
@@ -260,6 +261,9 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+      ensure_installed = vim.tbl_filter(function(server)
+          return server ~= "rust_analyzer"
+      end, ensure_installed)
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
         'prettier', -- Used to format Lua code
