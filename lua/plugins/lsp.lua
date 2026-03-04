@@ -209,8 +209,26 @@ return {
       --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
+
+      -- Helper to find executable, preferring system paths on NixOS over Mason
+      local function resolve_lsp_cmd(name, args)
+        local nixos_path = '/run/current-system/sw/bin/' .. name
+        if vim.fn.executable(nixos_path) == 1 then
+          local cmd = { nixos_path }
+          if args then
+            for _, arg in ipairs(args) do
+              table.insert(cmd, arg)
+            end
+          end
+          return cmd
+        end
+        return nil -- fall back to default (PATH lookup)
+      end
+
       local servers = {
-        -- clangd = {},
+        clangd = {
+          cmd = resolve_lsp_cmd('clangd', { '--background-index', '--clang-tidy' }),
+        },
         gopls = {},
         ts_ls = {
           filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
@@ -236,9 +254,7 @@ return {
         -- sqlls = {},
 
         lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
+          cmd = resolve_lsp_cmd('lua-language-server'),
           settings = {
             Lua = {
               completion = {
@@ -265,8 +281,14 @@ return {
       -- You can add other tools here that you want Mason to install
       -- for you, so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
+      -- On NixOS, exclude servers installed via Nix (Mason binaries don't work)
+      local is_nixos = vim.fn.executable('/run/current-system/sw/bin/nixos-version') == 1
+      local skip_install = { 'rust_analyzer' }
+      if is_nixos then
+        vim.list_extend(skip_install, { 'clangd', 'lua_ls' })
+      end
       ensure_installed = vim.tbl_filter(function(server)
-          return server ~= "rust_analyzer"
+        return not vim.tbl_contains(skip_install, server)
       end, ensure_installed)
       vim.list_extend(ensure_installed, {
         'stylua', -- Used to format Lua code
@@ -288,6 +310,12 @@ return {
           end,
         },
       }
+
+      -- Manually setup servers that may be installed outside of Mason (e.g., via system package manager)
+      for server_name, server in pairs(servers) do
+        server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+        require('lspconfig')[server_name].setup(server)
+      end
     end,
   },
 
