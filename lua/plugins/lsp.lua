@@ -301,6 +301,10 @@ return {
         automatic_installation = false,
         handlers = {
           function(server_name)
+            -- Skip servers that we'll set up manually (to avoid double setup)
+            if vim.tbl_contains(skip_install, server_name) then
+              return
+            end
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
@@ -311,8 +315,9 @@ return {
         },
       }
 
-      -- Manually setup servers that may be installed outside of Mason (e.g., via system package manager)
-      for server_name, server in pairs(servers) do
+      -- Manually setup servers that are skipped from Mason installation (e.g., rust_analyzer, or NixOS system packages)
+      for _, server_name in ipairs(skip_install) do
+        local server = servers[server_name] or {}
         server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
         require('lspconfig')[server_name].setup(server)
       end
