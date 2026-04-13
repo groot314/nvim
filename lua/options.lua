@@ -87,3 +87,10 @@ vim.o.swapfile = false
 
 vim.opt.exrc = true
 vim.opt.secure = true
+
+-- Detect .tofu files as opentofu filetype
+vim.filetype.add({
+  extension = {
+    tofu = 'opentofu',
+  },
+})

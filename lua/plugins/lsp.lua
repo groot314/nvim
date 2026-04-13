@@ -99,7 +99,9 @@ return {
 
       -- OpenTofu
       vim.lsp.config('tofu_ls', {
-        filetypes = { 'terraform', 'tfvars' },
+        filetypes = { 'opentofu', 'opentofu-vars', 'terraform', 'tfvars' },
+        root_markers = { '.terraform', '.git' },
+        single_file_support = true,
       })
 
       -- Go, HTML, Terraform, Pyright, Rust - use defaults
