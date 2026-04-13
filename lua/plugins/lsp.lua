@@ -97,6 +97,11 @@ return {
         filetypes = { 'html', 'css', 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
       })
 
+      -- OpenTofu
+      vim.lsp.config('tofu_ls', {
+        filetypes = { 'terraform', 'tfvars' },
+      })
+
       -- Go, HTML, Terraform, Pyright, Rust - use defaults
       -- (nvim-lspconfig provides sensible defaults via lsp/*.lua files)
 
@@ -114,7 +119,7 @@ return {
       local mason_ensure_installed = { 'stylua', 'prettier' }
 
       -- Servers to install via Mason (excluding system-installed ones)
-      local mason_servers = { 'gopls', 'ts_ls', 'tailwindcss', 'html', 'terraformls', 'pyright' }
+      local mason_servers = { 'gopls', 'ts_ls', 'tailwindcss', 'html', 'tofu_ls', 'pyright' }
       vim.list_extend(mason_ensure_installed, mason_servers)
 
       require('mason-tool-installer').setup { ensure_installed = mason_ensure_installed }
