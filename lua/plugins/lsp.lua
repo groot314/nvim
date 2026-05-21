@@ -1,6 +1,11 @@
 return {
   -- LSP Plugins
   {
+    -- KCL language support (syntax highlighting, folding, etc.)
+    'kcl-lang/kcl.nvim',
+    ft = 'kcl',
+  },
+  {
     -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
     -- used for completion, annotations and signatures of Neovim apis
     'folke/lazydev.nvim',
@@ -121,7 +126,7 @@ return {
       local mason_ensure_installed = { 'stylua', 'prettier' }
 
       -- Servers to install via Mason (excluding system-installed ones)
-      local mason_servers = { 'gopls', 'ts_ls', 'tailwindcss', 'html', 'tofu_ls', 'pyright' }
+      local mason_servers = { 'gopls', 'ts_ls', 'tailwindcss', 'html', 'tofu_ls', 'pyright', 'kcl' }
       vim.list_extend(mason_ensure_installed, mason_servers)
 
       require('mason-tool-installer').setup { ensure_installed = mason_ensure_installed }
